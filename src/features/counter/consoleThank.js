@@ -1,6 +1,6 @@
 import { increment, incrementByAmount } from "./counterSlice"
 import store from "./store"
- 
+
 console.log("Counter values")
 store.subscribe(() => console.log(
     `by subscribe: ${store.getState().counter.value}`));
@@ -13,8 +13,6 @@ const exampleThunkFunction = (dispatch, getState) => {
     console.log(`after  increment: ${stateAfter.counter.value}`)
 }
 
-store.dispatch(exampleThunkFunction)
-
 const logAndAdd = amount => {
     return (dispatch, getState) => {
         const stateBefore = getState()
@@ -25,4 +23,6 @@ const logAndAdd = amount => {
     }
 }
 
+store.dispatch(increment())
+store.dispatch(exampleThunkFunction)
 store.dispatch(logAndAdd(5))
