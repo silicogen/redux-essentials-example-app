@@ -24,5 +24,7 @@ const logAndAdd = amount => {
 }
 
 store.dispatch(increment())
+store.dispatch(incrementByAmount(-1))
+
 store.dispatch(exampleThunkFunction)
 store.dispatch(logAndAdd(5))
