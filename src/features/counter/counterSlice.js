@@ -20,4 +20,23 @@ const counterSlice = createSlice({
 
 export const { increment, decrement, incrementByAmount } = counterSlice.actions
 
+export  const exampleThunkFunction = (dispatch, getState) => {
+  const stateBefore = getState()
+  console.log(`before increment: ${stateBefore.counter.value}`)
+  dispatch(increment())
+  const stateAfter = getState()
+  console.log(`after  increment: ${stateAfter.counter.value}`)
+}
+
+export const logAndAdd = amount => {
+  return (dispatch, getState) => {
+      const stateBefore = getState()
+      console.log(`before incrementByAmount(${amount}): ${stateBefore.counter.value}`)
+      dispatch(incrementByAmount(amount))
+      const stateAfter = getState()
+      console.log(`after  incrementByAmount(${amount}): ${stateAfter.counter.value}`)
+  }
+}
+
+
 export default counterSlice.reducer
