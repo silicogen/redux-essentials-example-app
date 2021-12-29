@@ -9,6 +9,7 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {},
+  // Чупров. Не вижу обновления пользователей как в обновлении постов.
   extraReducers(builder) {
     builder.addCase(fetchUsers.fulfilled, (state, action) => action.payload)
   }
