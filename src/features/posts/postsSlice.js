@@ -61,6 +61,7 @@ const postsSlice = createSlice({
         state.status = 'loading'
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
+        //Чупров: Не получается поставить точку останова.
         state.status = 'succeeded'
         // Add any fetched posts to the array
         state.posts = state.posts.concat(action.payload)
