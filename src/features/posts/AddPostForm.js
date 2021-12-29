@@ -25,7 +25,9 @@ export const AddPostForm = () => {
         setAddRequestStatus('pending')
         await dispatch(
           addNewPost({ title, content, user: userId })
-        ).unwrap()
+        )
+        // Чупров. Что за unwrap?
+        .unwrap()
         setTitle('')
         setContent('')
         setUserId('')
