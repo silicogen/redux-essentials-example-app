@@ -28,24 +28,21 @@ const notificationsSlice = createSlice({
   initialState: notificationsAdapter.getInitialState(),
   reducers: {
     allNotificationsRead(state, action) {
-      Object.values(state.entities).forEach((notification) => {
-        notification.read = true
-      })
+      Object.values(state.entities)
+        .forEach(notification => notification.read = true)
     },
   },
   extraReducers(builder) {
     builder.addCase(fetchNotifications.fulfilled, (state, action) => {
-      // Add client-side metadata for tracking new notifications
-      const notificationsWithMetadata = action.payload.map((notification) => ({
-        ...notification,
-        read: false,
-        isNew: true,
-      }))
+      const notificationsWithMetadata = action.payload
+        .map(notification => ({
+          ...notification,
+          read: false,
+          isNew: true,
+        }))
 
-      Object.values(state.entities).forEach((notification) => {
-        // Any notifications we've read are no longer new
-        notification.isNew = !notification.read
-      })
+      Object.values(state.entities)
+        .forEach(notification => notification.isNew = !notification.read)
 
       notificationsAdapter.upsertMany(state, notificationsWithMetadata)
     })
@@ -58,4 +55,5 @@ export default notificationsSlice.reducer
 
 export const {
   selectAll: selectAllNotifications,
-} = notificationsAdapter.getSelectors((state) => state.notifications)
+} = notificationsAdapter
+  .getSelectors(state => state.notifications)
