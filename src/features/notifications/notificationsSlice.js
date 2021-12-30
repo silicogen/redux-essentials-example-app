@@ -7,7 +7,7 @@ import {
 import { client } from '../../api/client'
 
 const notificationsAdapter = createEntityAdapter({
-  sortComparer: (a, b) => b.date.localeCompare(a.date),
+  sortComparer: (a, b) => b.date.localeCompare(a.date)
 })
 
 export const fetchNotifications = createAsyncThunk(
@@ -15,10 +15,9 @@ export const fetchNotifications = createAsyncThunk(
   async (_, { getState }) => {
     const allNotifications = selectAllNotifications(getState())
     const [latestNotification] = allNotifications
-    const latestTimestamp = latestNotification ? latestNotification.date : ''
-    const response = await client.get(
-      `/fakeApi/notifications?since=${latestTimestamp}`
-    )
+    const latestTimestamp = latestNotification?.date || ""
+    const response = await client
+      .get(`/fakeApi/notifications?since=${latestTimestamp}`)
     return response.data
   }
 )
@@ -30,22 +29,24 @@ const notificationsSlice = createSlice({
     allNotificationsRead(state, action) {
       Object.values(state.entities)
         .forEach(notification => notification.read = true)
-    },
+    }
   },
   extraReducers(builder) {
-    builder.addCase(fetchNotifications.fulfilled, (state, action) => {
-      const notificationsWithMetadata = action.payload
-        .map(notification => ({
-          ...notification,
-          read: false,
-          isNew: true,
-        }))
+    builder.addCase(
+      fetchNotifications.fulfilled,
+      (state, action) => {
+        const notificationsWithMetadata = action.payload
+          .map(notification => ({
+            ...notification,
+            read: false,
+            isNew: true,
+          }))
 
-      Object.values(state.entities)
-        .forEach(notification => notification.isNew = !notification.read)
+        Object.values(state.entities)
+          .forEach(notification => notification.isNew = !notification.read)
 
-      notificationsAdapter.upsertMany(state, notificationsWithMetadata)
-    })
+        notificationsAdapter.upsertMany(state, notificationsWithMetadata)
+      })
   },
 })
 
@@ -54,6 +55,6 @@ export const { allNotificationsRead } = notificationsSlice.actions
 export default notificationsSlice.reducer
 
 export const {
-  selectAll: selectAllNotifications,
+  selectAll: selectAllNotifications
 } = notificationsAdapter
   .getSelectors(state => state.notifications)
