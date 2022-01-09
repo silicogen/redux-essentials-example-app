@@ -24,7 +24,7 @@ export const Navbar = () => {
     )
   }
 
-  return (
+  return ( 
     <nav>
       <section>
         <h1>Redux Essentials Example</h1>
